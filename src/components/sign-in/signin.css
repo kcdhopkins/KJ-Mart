@@ -1,0 +1,33 @@
+.sign-in-icon-text{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+img{ filter: brightness(0) invert(1) }
+
+#sign-in-div:hover{
+    img{
+       filter: none 
+    }
+    .onHover{
+        color: white;
+    }
+}
+
+#sign-in-div:active {
+    img{ filter: brightness(0) invert(1) }
+    transform: scale(0.7);
+}
+
+@media (max-width: 600px){
+       
+}
+
+@media (min-width: 600px){
+   
+}
+
+@media (min-width: 1024px){
+    
+}

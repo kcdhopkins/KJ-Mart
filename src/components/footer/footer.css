@@ -1,0 +1,22 @@
+.footer{
+    margin-top: auto
+}
+
+.footer-bg-color{
+    background: #bfd6f6;
+} 
+
+.footer-size{
+    height: 150px;
+}
+@media (max-width: 600px){
+       
+}
+
+@media (min-width: 600px){
+   
+}
+
+@media (min-width: 1024px){
+    
+}
