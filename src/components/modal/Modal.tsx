@@ -5,9 +5,10 @@ type ModalTypes = {
     setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
     title: string
     children?: React.ReactNode; 
+    hideButtons?: boolean
 }
 
-const Modal: React.FC<ModalTypes> = ({ setShowModal, title, children }) => {
+const Modal: React.FC<ModalTypes> = ({ setShowModal, title, children, hideButtons }) => {
     //dispatchSubmitEvent is used to let components that need to submit know that the submit event has been fired by the submit button on this modal
     const dispatchSubmitEvent = ()=>{
         const event : Event = new CustomEvent('submitEvent')
@@ -30,13 +31,13 @@ const Modal: React.FC<ModalTypes> = ({ setShowModal, title, children }) => {
                     <div className="card-body">
                         {children}
                     </div>
-                    <div className="move-to-bottom">
+                    {!hideButtons && <div className="move-to-bottom">
                         <hr />
                         <div className="card-footer">
                             <button onClick={()=>dispatchSubmitEvent()}>Submit</button>
                             <button onClick={() => onCancel()}>Cancel</button>
                         </div>
-                    </div>
+                    </div>}
                 </div>
             </div>
         </>

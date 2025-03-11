@@ -8,6 +8,8 @@ import CreateAccountForm from '../createAccount/CreateAccountForm';
 const SignIn: React.FC = () => {
     const [showModal, setShowModal] = useState(false)
     const [createAnAccountForm, setCreateAnAccountForm] = useState(false)
+    const [accountCreationSuccess, setAccountCreationSuccess] = useState(false)
+ 
     return (
         <>
             <div onClick={() => setShowModal(true)}>
@@ -20,8 +22,16 @@ const SignIn: React.FC = () => {
             {showModal && !createAnAccountForm && <Modal setShowModal={setShowModal} title="Sign In">
                 <SignInForm setShowModal={setShowModal} setCreateAnAccountForm={setCreateAnAccountForm}/>
             </Modal>}
-            {showModal && createAnAccountForm && <Modal setShowModal={setShowModal} title="Create An Account">
-                <CreateAccountForm setShowModal={setShowModal} setCreateAnAccountForm={setCreateAnAccountForm}/>
+            {showModal && createAnAccountForm && !accountCreationSuccess &&<Modal setShowModal={setShowModal} title="Create An Account">
+                <CreateAccountForm setShowModal={setShowModal} setCreateAnAccountForm={setCreateAnAccountForm} setAccountCreationSuccess={setAccountCreationSuccess}/>
+            </Modal>}
+            {showModal && accountCreationSuccess && <Modal setShowModal={setShowModal} title="Account Created" hideButtons={true}>
+                <div>
+                    <p>Your account was created successfully! You may close this pop-up and continue shopping!</p>
+                    <div className="container center">
+                        <button onClick={()=>setShowModal(false)}>Close</button>
+                    </div>
+                </div>
             </Modal>}
         </>
     );

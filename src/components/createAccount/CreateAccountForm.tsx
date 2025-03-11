@@ -4,9 +4,10 @@ import { callCreateAccount } from "../../api/AccountService/account";
 type CreateAccountFormTypes = {
     setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
     setCreateAnAccountForm: React.Dispatch<React.SetStateAction<boolean>>;
+    setAccountCreationSuccess: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const CreateAccountForm: React.FC<CreateAccountFormTypes> = ({ setShowModal, setCreateAnAccountForm }) => {
+const CreateAccountForm: React.FC<CreateAccountFormTypes> = ({ setShowModal, setCreateAnAccountForm, setAccountCreationSuccess}) => {
     const [firstName, setFirstName] = useState('')
     const [lastName, setLastName] = useState('')
     const [email, setEmail] = useState('')
@@ -20,7 +21,7 @@ const CreateAccountForm: React.FC<CreateAccountFormTypes> = ({ setShowModal, set
     const [invalidApiEmail, setInvalidApiEmail] = useState(false)
 
     const handleSubmit = async () => {
-        //Used to determine if the form can submit with any requied fields active
+        //Used to determine if the form can submit, determined by requied fields
         let canSubmit = true
         if (email) {
             const emailFormat = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -61,6 +62,12 @@ const CreateAccountForm: React.FC<CreateAccountFormTypes> = ({ setShowModal, set
                 setInvalidApiEmail(false)
                 setUserExistErrorMessage(false)
             }
+
+            if(result.message === 'User Created'){
+                setAccountCreationSuccess(true)
+                return
+            }
+
             setShowModal(false)
             setCreateAnAccountForm(false)
         } else {
@@ -122,7 +129,6 @@ const CreateAccountForm: React.FC<CreateAccountFormTypes> = ({ setShowModal, set
                     {reEnterPassword && showRequiredFields && passwordDontMatch && <div className="margin-left warning-text">Password don't match</div>}
                     <input name="re-enter-password" type="password" value={reEnterPassword} onChange={e => setReEnterPassword(e.currentTarget.value)} />
                 </div>
-
             </div>
         </>
     )
