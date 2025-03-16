@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { callCreateAccount } from "../../api/AccountService/account";
+import { useAuth } from "../authProvider/authContext";
 
 type CreateAccountFormTypes = {
     setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -7,7 +8,7 @@ type CreateAccountFormTypes = {
     setAccountCreationSuccess: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const CreateAccountForm: React.FC<CreateAccountFormTypes> = ({ setShowModal, setCreateAnAccountForm, setAccountCreationSuccess}) => {
+const CreateAccountForm: React.FC<CreateAccountFormTypes> = ({ setShowModal, setCreateAnAccountForm, setAccountCreationSuccess }) => {
     const [firstName, setFirstName] = useState('')
     const [lastName, setLastName] = useState('')
     const [email, setEmail] = useState('')
@@ -19,9 +20,9 @@ const CreateAccountForm: React.FC<CreateAccountFormTypes> = ({ setShowModal, set
     const [passwordTooShort, setPasswordTooShort] = useState(false)
     const [userExistErrorMessage, setUserExistErrorMessage] = useState(false)
     const [invalidApiEmail, setInvalidApiEmail] = useState(false)
+    const {dispatch} = useAuth()
 
     const handleSubmit = async () => {
-        //Used to determine if the form can submit, determined by requied fields
         let canSubmit = true
         if (email) {
             const emailFormat = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -54,22 +55,23 @@ const CreateAccountForm: React.FC<CreateAccountFormTypes> = ({ setShowModal, set
 
         if (canSubmit) {
             const result = await callCreateAccount({ firstName, lastName, email, password })
-            if(result.message === 'User exists' || result.message === 'Invalid email'){
+            if (result?.message === 'User exists' || result?.message === 'Invalid email') {
                 result.message === 'User exists' && setUserExistErrorMessage(true)
                 result.message === 'Invalid email' && setInvalidApiEmail(true)
                 return
-            }else if(invalidApiEmail || userExistErrorMessage){
+            } else if (invalidApiEmail || userExistErrorMessage) {
                 setInvalidApiEmail(false)
                 setUserExistErrorMessage(false)
             }
 
-            if(result.message === 'User Created'){
+            if (result?.message === 'User Created') {
+                delete result.message
+                delete result.status
+                dispatch({type: 'LOGIN', payload: result})
                 setAccountCreationSuccess(true)
+                setCreateAnAccountForm(false)
                 return
             }
-
-            setShowModal(false)
-            setCreateAnAccountForm(false)
         } else {
             setShowRequiredFields(true)
         }

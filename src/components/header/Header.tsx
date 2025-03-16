@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import "./header.css"
 import SignIn from '../sign-in/SignIn'
-import signInIcon from '../../images/sign-in.png'
+import DropDown from '../dropDown/DropDown';
+
 const App: React.FC = () => {
+  const [showDropDown, setShowDropDown] = useState(false)
   return (
     <div className="header-bg-color header-size">
       <div className="layout space-between-layout h-center take-height">
@@ -13,9 +15,10 @@ const App: React.FC = () => {
           <p>I'm the Header</p>
         </div>
         <div className="">
-          <SignIn />
+          <SignIn setShowDropDown={setShowDropDown} />
         </div>
       </div>
+      {showDropDown && <DropDown setShowDropDown={setShowDropDown}/>}
     </div>
   );
 };
