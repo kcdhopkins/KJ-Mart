@@ -4,12 +4,14 @@ const path = require('path');
 const app = express();
 const cors = require('cors');
 const apiRoutes = require('./api/apiRoutes');
-const client = require('./database/mongo-db/mongo')
 const PORT = process.env.PORT || 4000;
+const cookieParser = require('cookie-parser');
 
 app.use(express.json());
+app.use(cookieParser())
 app.use(cors({
-  origin: "http://localhost:3000"
+  origin: "http://localhost:3000",
+  credentials: true
 }));
 
 app.use(express.static(path.join(__dirname, './dist')));

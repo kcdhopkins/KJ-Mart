@@ -21,7 +21,7 @@ export const callSignIn = async ({email, password} : callSignInTypes) => {
             },
             body: JSON.stringify({email, password})
           })
-        return {status: response.status, userInfo:{name:'fuzzy bear'}}
+        return response.json()
     } catch (err) {
         throw new Error('calling sign in failed')
     }
@@ -44,6 +44,26 @@ export const callCreateAccount = async ({firstName, lastName, email, password}:c
     
         return response.json()
     } catch (err){
-        throw new Error('callCreateAccount has throw an error')
+        throw new Error('callCreateAccount has thrown an error')
     }
 }
+
+export const callAutoAuth = async ()=>{
+    try{
+        const response = await fetch('http://localhost:4000/api/account/autoAuth', {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${localStorage.getItem('token')}`,
+            },
+            credentials: 'include'
+        })
+
+        const result = await response.json()
+        delete result.status
+        return result
+    } catch(err){
+        throw new Error('Error calling autoAuth')
+    }
+}
+

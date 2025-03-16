@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { callSignIn } from "../../api/AccountService/account";
+import { useAuth } from "../authProvider/authContext";
 
 type SignInFormTypes = {
     setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -9,10 +10,18 @@ type SignInFormTypes = {
 const SignInForm: React.FC<SignInFormTypes> = ({ setShowModal, setCreateAnAccountForm }) => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
-
+    const {dispatch} = useAuth()
+    
     const handleSubmit = async () => {
-        await callSignIn({ email, password })
-        setShowModal(false)
+        try{
+            const result = await callSignIn({ email, password })
+            if(result?.loggedIn){
+                delete result.status
+                dispatch({type: 'LOGIN', payload: result})
+            }
+        }catch(err){
+            throw new Error('Error while signing in')
+        }
     }
 
     useEffect(() => {

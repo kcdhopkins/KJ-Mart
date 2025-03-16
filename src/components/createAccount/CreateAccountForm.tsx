@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { callCreateAccount } from "../../api/AccountService/account";
+import { useAuth } from "../authProvider/authContext";
 
 type CreateAccountFormTypes = {
     setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
     setCreateAnAccountForm: React.Dispatch<React.SetStateAction<boolean>>;
+    setAccountCreationSuccess: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const CreateAccountForm: React.FC<CreateAccountFormTypes> = ({ setShowModal, setCreateAnAccountForm }) => {
+const CreateAccountForm: React.FC<CreateAccountFormTypes> = ({ setShowModal, setCreateAnAccountForm, setAccountCreationSuccess }) => {
     const [firstName, setFirstName] = useState('')
     const [lastName, setLastName] = useState('')
     const [email, setEmail] = useState('')
@@ -18,9 +20,9 @@ const CreateAccountForm: React.FC<CreateAccountFormTypes> = ({ setShowModal, set
     const [passwordTooShort, setPasswordTooShort] = useState(false)
     const [userExistErrorMessage, setUserExistErrorMessage] = useState(false)
     const [invalidApiEmail, setInvalidApiEmail] = useState(false)
+    const {dispatch} = useAuth()
 
     const handleSubmit = async () => {
-        //Used to determine if the form can submit with any requied fields active
         let canSubmit = true
         if (email) {
             const emailFormat = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -53,16 +55,23 @@ const CreateAccountForm: React.FC<CreateAccountFormTypes> = ({ setShowModal, set
 
         if (canSubmit) {
             const result = await callCreateAccount({ firstName, lastName, email, password })
-            if(result.message === 'User exists' || result.message === 'Invalid email'){
+            if (result?.message === 'User exists' || result?.message === 'Invalid email') {
                 result.message === 'User exists' && setUserExistErrorMessage(true)
                 result.message === 'Invalid email' && setInvalidApiEmail(true)
                 return
-            }else if(invalidApiEmail || userExistErrorMessage){
+            } else if (invalidApiEmail || userExistErrorMessage) {
                 setInvalidApiEmail(false)
                 setUserExistErrorMessage(false)
             }
-            setShowModal(false)
-            setCreateAnAccountForm(false)
+
+            if (result?.message === 'User Created') {
+                delete result.message
+                delete result.status
+                dispatch({type: 'LOGIN', payload: result})
+                setAccountCreationSuccess(true)
+                setCreateAnAccountForm(false)
+                return
+            }
         } else {
             setShowRequiredFields(true)
         }
@@ -122,7 +131,6 @@ const CreateAccountForm: React.FC<CreateAccountFormTypes> = ({ setShowModal, set
                     {reEnterPassword && showRequiredFields && passwordDontMatch && <div className="margin-left warning-text">Password don't match</div>}
                     <input name="re-enter-password" type="password" value={reEnterPassword} onChange={e => setReEnterPassword(e.currentTarget.value)} />
                 </div>
-
             </div>
         </>
     )

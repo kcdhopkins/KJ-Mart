@@ -5,14 +5,39 @@
 .header-size{
     height: 100px;
 }
+
+.drop-down{
+    display: flex;
+    justify-content: flex-end;
+}
+
+li{
+    padding:5px;
+    margin:5px;
+    margin-top: 10px;
+    list-style-type: none;
+}
+
 @media (max-width: 600px){
-       
+    .drop-down-wt{
+        width: 250px;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        border-radius: 5%;
+    }  
 }
 
 @media (min-width: 600px){
-   
+    .drop-down-wt{
+        width: 250px;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        border-radius: 5%;
+    } 
 }
 
 @media (min-width: 1024px){
-    
+    .drop-down-wt{
+        width: 250px;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        border-radius: 5%;
+    } 
 }
