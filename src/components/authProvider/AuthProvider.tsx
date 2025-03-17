@@ -9,8 +9,17 @@ const authReducer = (state: UserInfo, action: AuthAction): UserInfo => {
     case 'LOGIN':
       console.log({ ...state, ...action.payload })
       return { ...state, ...action.payload };
-    // case 'LOGOUT':
-    //   return { ...state, user: null };
+    case 'LOGOUT':
+      return {
+        user: {
+          firstName: "",
+          lastName: "",
+          email: "",
+          _id: "",
+        },
+        token: "",
+        loggedIn: false
+      }
     default:
       return state;
   }

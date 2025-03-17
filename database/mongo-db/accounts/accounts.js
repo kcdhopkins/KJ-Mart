@@ -1,44 +1,84 @@
 const { ObjectId } = require('mongodb');
 const connectToDatabase = require('../mongo');
 
-const createUserAccount = async ({sanitizedFirstName, sanitizedLastName, email, encryptedPassword})=>{
-    try{
+const createUserAccount = async ({ sanitizedFirstName, sanitizedLastName, email, encryptedPassword }) => {
+    try {
         const db = await connectToDatabase()
         const userCollection = db.collection('users')
-        const result = await userCollection.insertOne({firstName: sanitizedFirstName, lastName: sanitizedLastName, email, password: encryptedPassword})
-        return {status: 200, message: 'User Created', _id:result.insertedId}
-    } catch (err){
+        const result = await userCollection.insertOne({ firstName: sanitizedFirstName, lastName: sanitizedLastName, email, password: encryptedPassword })
+        return { status: 200, message: 'User Created', _id: result.insertedId }
+    } catch (err) {
         throw new Error('Error while creating user ' + err)
     }
 }
 
-const getUserByEmail = async (email)=>{
-    try{
+const getUserByEmail = async (email) => {
+    try {
         const db = await connectToDatabase()
         const usersCollection = db.collection('users')
-        const existingUser = await usersCollection.findOne({email})
-        delete existingUser?.password
+        const existingUser = await usersCollection.findOne({ email })
         return existingUser
-    } catch (err){
+    } catch (err) {
         throw new Error('Error while Checking user' + err)
     }
 }
 
-const getUserBy_Id = async (id)=>{
-    
-    try{
+const getUserBy_Id = async (id) => {
+    try {
         const db = await connectToDatabase()
         const usersCollection = db.collection('users')
-        const existingUser = await usersCollection.findOne({_id: new ObjectId(id)})
+        const existingUser = await usersCollection.findOne({ _id: id })
         delete existingUser.password
         return existingUser
-    } catch (err){
+    } catch (err) {
         throw new Error('Error while Checking user ' + err)
+    }
+}
+
+const logoutUser = async (id, token) => {
+    try {
+        const db = await connectToDatabase()
+        const invalidTokensCollection = db.collection('invalidTokens')
+
+        const response = await invalidTokensCollection.updateOne(
+            { userId: id }, // 
+            { $push: { tokens: token } }
+        )
+
+        if(response.modifiedCount === 0){
+            const invalidTokenObject = {
+                userId: id,
+                tokens: [token]
+            }
+            const result = await invalidTokensCollection.insertOne(invalidTokenObject)
+            if (!result?.insertedId) {
+                return false
+            }
+        }
+        return true
+    } catch (err) {
+        throw new Error('Error while logging out. ' + err)
+    }
+}
+
+const isTokenInvalidated = async (id, token)=>{
+    try {
+        const db = await connectToDatabase()
+        const invalidTokensCollection = db.collection('invalidTokens')
+        const invalidatedToken = await invalidTokensCollection.findOne({ userId: id, tokens: {$in: [token]} })
+        if(invalidatedToken){
+            return true
+        }
+        return false
+    } catch (err) {
+        throw new Error('Error while logging out. ' + err)
     }
 }
 
 module.exports = {
     createUserAccount,
     getUserByEmail,
-    getUserBy_Id
+    getUserBy_Id,
+    logoutUser,
+    isTokenInvalidated
 }

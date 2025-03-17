@@ -28,7 +28,7 @@ const SignIn: React.FC<SignInTypes> = ({setShowDropDown}) => {
                 <div id="sign-in-div" className='sign-in-icon-text bright-invert'>
                     <img src={signInIcon} />
                     {!state.loggedIn && <p className="onHover" >Sign In</p>}
-                    {state.loggedIn && <p className="onHover" >{`Welcome ${state.user.firstName} ${state.user.lastName}`}</p>}
+                    {state.loggedIn && <p className="onHover" >{`Welcome ${state.user.firstName}`}</p>}
                 </div>
             </div>
             {showModal && !createAnAccountForm && !state.loggedIn && <Modal setShowModal={setShowModal} title="Sign In">
