@@ -20,6 +20,9 @@ const SignIn: React.FC<SignInTypes> = ({setShowDropDown}) => {
         if(state.loggedIn){
             localStorage.setItem('token', state.token)
         }
+        if(!state.loggedIn){
+            setAccountCreationSuccess(false)
+        }
     }, [state.loggedIn])
 
     return (
