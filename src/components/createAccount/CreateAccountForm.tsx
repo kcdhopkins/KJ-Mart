@@ -20,7 +20,7 @@ const CreateAccountForm: React.FC<CreateAccountFormTypes> = ({ setShowModal, set
     const [passwordTooShort, setPasswordTooShort] = useState(false)
     const [userExistErrorMessage, setUserExistErrorMessage] = useState(false)
     const [invalidApiEmail, setInvalidApiEmail] = useState(false)
-    const {dispatch} = useAuth()
+    const {state, dispatch} = useAuth()
 
     const handleSubmit = async () => {
         let canSubmit = true

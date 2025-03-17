@@ -67,3 +67,21 @@ export const callAutoAuth = async ()=>{
     }
 }
 
+export const callLogoutUser = async ()=>{
+    try{
+        const response = await fetch('http://localhost:4000/api/account/logout', {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${localStorage.getItem('token')}`,
+            },
+            credentials: 'include'
+        })
+
+        const result = await response.json()
+        console.log(result)
+        return result
+    } catch(err){
+        throw new Error('Error calling logout')
+    }
+}

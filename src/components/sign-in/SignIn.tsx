@@ -20,6 +20,9 @@ const SignIn: React.FC<SignInTypes> = ({setShowDropDown}) => {
         if(state.loggedIn){
             localStorage.setItem('token', state.token)
         }
+        if(!state.loggedIn){
+            setAccountCreationSuccess(false)
+        }
     }, [state.loggedIn])
 
     return (
@@ -28,7 +31,7 @@ const SignIn: React.FC<SignInTypes> = ({setShowDropDown}) => {
                 <div id="sign-in-div" className='sign-in-icon-text bright-invert'>
                     <img src={signInIcon} />
                     {!state.loggedIn && <p className="onHover" >Sign In</p>}
-                    {state.loggedIn && <p className="onHover" >{`Welcome ${state.user.firstName} ${state.user.lastName}`}</p>}
+                    {state.loggedIn && <p className="onHover" >{`Welcome ${state.user.firstName}`}</p>}
                 </div>
             </div>
             {showModal && !createAnAccountForm && !state.loggedIn && <Modal setShowModal={setShowModal} title="Sign In">
@@ -37,7 +40,7 @@ const SignIn: React.FC<SignInTypes> = ({setShowDropDown}) => {
             {showModal && createAnAccountForm && !accountCreationSuccess &&<Modal setShowModal={setShowModal} title="Create An Account">
                 <CreateAccountForm setShowModal={setShowModal} setCreateAnAccountForm={setCreateAnAccountForm} setAccountCreationSuccess={setAccountCreationSuccess}/>
             </Modal>}
-            {showModal && accountCreationSuccess && <Modal setShowModal={setShowModal} title="Account Created" hideButtons={true}>
+            {showModal && accountCreationSuccess && state.loggedIn && <Modal setShowModal={setShowModal} title="Account Created" hideButtons={true}>
                 <div>
                     <p>Your account was created successfully! You may close this pop-up and continue shopping!</p>
                     <div className="container center add-margin">

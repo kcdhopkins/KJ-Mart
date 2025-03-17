@@ -3,8 +3,8 @@ const router = express.Router();
 const { createUserAccount, getUserByEmail, getUserBy_Id } = require('../../database/mongo-db/accounts/accounts')
 const { encryptPassword, sanitizeUsername, verifyPassword, authUserToken }= require('../../functions/helperFunctions.js')
 const jwt = require('jsonwebtoken')
-
-
+const {signJWTWebToken} = require('../../functions/helperFunctions.js')
+const {logoutUser} = require('../../database/mongo-db/accounts/accounts.js')
 router.post('/sign-in', async (req, res) => {
     const {email, password } = req.body
 
@@ -18,10 +18,12 @@ router.post('/sign-in', async (req, res) => {
     }
   
     const userDBDetails = await getUserByEmail(email)
+
     if(!userDBDetails?._id){
         res.send({status: 200, message: "User doesn't exist"})
         return
     }
+    
     const isValidPassword = verifyPassword(password, userDBDetails.password)
 
     if(!isValidPassword){
@@ -31,11 +33,7 @@ router.post('/sign-in', async (req, res) => {
 
     delete userDBDetails.password
 
-    const token = jwt.sign(
-        { user: userDBDetails },
-        process.env.JWT_SECRET,
-        { expiresIn: '1h' }
-    );
+    const token = signJWTWebToken(userDBDetails)
 
     res.cookie('token', token, {
         httpOnly: true,
@@ -45,7 +43,7 @@ router.post('/sign-in', async (req, res) => {
     });
 
     res.send(JSON.stringify({status: 200, loggedIn: true, user:userDBDetails, token}))
- 
+
 });
 
 router.post('/create-account', async(req, res) => {
@@ -75,12 +73,8 @@ router.post('/create-account', async(req, res) => {
  
     if(result._id){
         const user = await getUserBy_Id(result._id)
-
-        const token = jwt.sign(
-            { user: user },
-            process.env.JWT_SECRET,
-            { expiresIn: '1h' }
-        );
+        delete user.password
+        const token = signJWTWebToken(user)
 
         res.cookie('token', token, {
             httpOnly: true,
@@ -96,11 +90,18 @@ router.post('/create-account', async(req, res) => {
 
 router.get('/autoAuth', authUserToken, async (req, res)=>{
     const user = await getUserByEmail(req.user.email)
+    delete user.password
     res.send(JSON.stringify({status: 200, loggedIn: true, user:user, token: req.token, message: 'Login Success'}))        
 })
 
-router.post('/logout', authUserToken, async (req, res)=>{
-    res?.cookie.clearCookies()
+router.get('/logout', authUserToken, async (req, res)=>{
+    const token = req.headers?.authorization && req.headers?.authorization.split(' ')[1] || req.cookies.token
+    const { _id } = req.user
+    const isUserLoggedOut = await logoutUser(_id, token)
+    if(!isUserLoggedOut){
+        res.send({status: 200, message: "Logout Failed"})
+        return
+    }
     res.send(JSON.stringify({status: 200, loggedIn: false, token:"", message: 'Logout Success'}))        
 })
 
