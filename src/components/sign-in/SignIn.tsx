@@ -37,7 +37,7 @@ const SignIn: React.FC<SignInTypes> = ({setShowDropDown}) => {
             {showModal && createAnAccountForm && !accountCreationSuccess &&<Modal setShowModal={setShowModal} title="Create An Account">
                 <CreateAccountForm setShowModal={setShowModal} setCreateAnAccountForm={setCreateAnAccountForm} setAccountCreationSuccess={setAccountCreationSuccess}/>
             </Modal>}
-            {showModal && accountCreationSuccess && <Modal setShowModal={setShowModal} title="Account Created" hideButtons={true}>
+            {showModal && accountCreationSuccess && state.loggedIn && <Modal setShowModal={setShowModal} title="Account Created" hideButtons={true}>
                 <div>
                     <p>Your account was created successfully! You may close this pop-up and continue shopping!</p>
                     <div className="container center add-margin">
