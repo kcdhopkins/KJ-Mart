@@ -105,4 +105,11 @@ router.get('/logout', authUserToken, async (req, res)=>{
     res.send(JSON.stringify({status: 200, loggedIn: false, token:"", message: 'Logout Success'}))        
 })
 
+router.get('/edit-account', authUserToken, async (req, res)=>{
+    console.log(req.body)
+    const user = await getUserByEmail(req.user.email)
+    delete user.password
+    res.send(JSON.stringify({status: 200, loggedIn: true, user:user, token: req.token, message: 'Login Success'}))        
+})
+
 module.exports = router

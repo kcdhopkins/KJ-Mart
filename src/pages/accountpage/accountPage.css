@@ -1,0 +1,19 @@
+.card-acct{
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    border-radius: 2%;
+    padding: 20px;
+}
+
+.acct-icon-size{
+    font-size: 150px;
+}
+
+.theme-color{
+    color: #4a91f2;
+}
+
+.grid-acct{
+    grid-template-columns: 1fr 2fr;
+    column-gap: 25px;
+}
+

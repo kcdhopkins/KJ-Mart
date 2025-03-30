@@ -7,7 +7,6 @@ import { callAutoAuth } from '../../api/AccountService/account';
 const authReducer = (state: UserInfo, action: AuthAction): UserInfo => {
   switch (action.type) {
     case 'LOGIN':
-      console.log({ ...state, ...action.payload })
       return { ...state, ...action.payload };
     case 'LOGOUT':
       return {
