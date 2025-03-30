@@ -4,20 +4,55 @@
     align-items: center;
 }
 
-img{ filter: brightness(0) invert(1) }
-
+.invert-color{ filter: brightness(0) invert(1) }
+#sign-in-div{
+    color: white;
+}
 #sign-in-div:hover{
     img{
        filter: none 
     }
     .onHover{
-        color: white;
+        color: black;
+    }
+
+    .arrow {
+        border: solid black;
+        border-width: 0 3px 3px 0;
+        display: inline-block;
+        padding: 3px;
+    }
+    .header-text-color{
+        color: black;
     }
 }
 
 #sign-in-div:active {
     img{ filter: brightness(0) invert(1) }
     transform: scale(0.7);
+}
+.arrow {
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    display: inline-block;
+    padding: 3px;
+}
+
+
+.down {
+    transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+  }
+
+.sign-in-text-color{
+    color: white;
+}
+
+.fa-user{
+    font-size: 25px;
+}
+.fa-cart-shopping{
+    font-size: 25px; 
 }
 
 @media (max-width: 600px){

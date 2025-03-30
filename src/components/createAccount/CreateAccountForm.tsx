@@ -98,7 +98,7 @@ const CreateAccountForm: React.FC<CreateAccountFormTypes> = ({ setShowModal, set
             {userExistErrorMessage && <div className="warning-text">An account with this email exist, please try again with a different email.</div>}
             {invalidApiEmail && <div className="warning-text">There was an issue with the email address entered, please try again.</div>}
             {<div></div>}
-            <div className="grid-container center-items">
+            <div className="grid-container grid-temp-column-layout center-items">
                 <span>First Name:</span>
                 <div className="container-column">
                     {!firstName && showRequiredFields && <div className="margin-left warning-text">Required</div>}

@@ -4,6 +4,7 @@ import HomePage from './pages/homepage/Homepage';
 import Layout from './components/layout/Layout';
 import ShopPage from './pages/shoppage/ShopPage';
 import { AuthProvider } from './components/authProvider/AuthProvider';
+import AccountPage from './pages/accountpage/AccountPage';
 
 const App: React.FC = () => {
   return (
@@ -13,6 +14,7 @@ const App: React.FC = () => {
           <Route path="/" element={<Layout />} >
             <Route index element={<HomePage />} />
             <Route path="shop" element={<ShopPage />} />
+            <Route path="account" element={<AccountPage />} />
           </Route>
         </Routes>
       </BrowserRouter>

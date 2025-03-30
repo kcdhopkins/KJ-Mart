@@ -27,11 +27,11 @@ const SignIn: React.FC<SignInTypes> = ({setShowDropDown}) => {
 
     return (
         <>
-            <div onClick={state.loggedIn ? ()=>setShowDropDown(true) : () => setShowModal(true)}>
-                <div id="sign-in-div" className='sign-in-icon-text bright-invert'>
-                    <img src={signInIcon} />
-                    {!state.loggedIn && <p className="onHover" >Sign In</p>}
-                    {state.loggedIn && <p className="onHover" >{`Welcome ${state.user.firstName}`}</p>}
+            <div className="clickable add-margin" onClick={state.loggedIn ? ()=>setShowDropDown((prevValue)=>!prevValue) : () => setShowModal(true)}>
+                <div id="sign-in-div" className='sign-in-icon-text '>
+                    <i className="fa-solid fa-user header-text-color"></i>
+                    {!state.loggedIn && <h3 className="onHover" >Sign In</h3>}
+                    {state.loggedIn && <h3 className="onHover" >{`Hi ${state.user.firstName} `} <i className="fa-solid fa-angle-down"></i></h3>}
                 </div>
             </div>
             {showModal && !createAnAccountForm && !state.loggedIn && <Modal setShowModal={setShowModal} title="Sign In">

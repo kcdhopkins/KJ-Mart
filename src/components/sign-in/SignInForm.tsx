@@ -31,7 +31,7 @@ const SignInForm: React.FC<SignInFormTypes> = ({ setShowModal, setCreateAnAccoun
 
     return (
         <>
-            <div className="grid-container center-items">
+            <div className="grid-container grid-temp-column-layout center-items">
                 <span>Email:</span>
                 <input name="email" onChange={(e) => setEmail(e.currentTarget.value)} />
                 <span>Password:</span>

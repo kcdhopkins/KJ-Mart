@@ -13,15 +13,13 @@ export type UserInfo = {
 }
 
 export type AuthProviderProps = {
-    children: ReactNode; // Type for React children
+    children: ReactNode; 
 }
 
-// Define action types
 export type AuthAction =
     | { type: 'LOGIN'; payload: UserInfo }
     | { type: 'LOGOUT' };
 
-// Define the context value type
 export type AuthContextType = {
     state: UserInfo;
     dispatch: React.Dispatch<AuthAction>;

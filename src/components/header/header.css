@@ -9,15 +9,35 @@
 .drop-down{
     display: flex;
     justify-content: flex-end;
+    position: relative;
+    z-index: 1000;
 }
 
-li{
+.li-style{
     padding:5px;
     margin:5px;
     margin-top: 10px;
     list-style-type: none;
 }
 
+.header-text-color{
+    color: white;
+}
+
+.header-text-color:hover{
+    color: black;
+}
+
+.clickable {
+    cursor: pointer;
+}
+.header-container{
+    display: flex;
+}
+
+.logo{
+    font-size: 30px;
+}
 @media (max-width: 600px){
     .drop-down-wt{
         width: 250px;

@@ -1,0 +1,24 @@
+.oh-max-width{
+    max-width: 800px;
+}
+
+.border{
+    border: solid 2px;
+}
+
+.space-between{
+    justify-content: space-between;
+}
+
+.full-width{
+    width: 100%
+}
+
+.g-container{
+    display: grid;
+    
+}
+
+.g-space-between{
+    grid-template-columns: repeat(4, 1fr);;
+}
