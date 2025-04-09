@@ -2,9 +2,10 @@ import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router';
 import HomePage from './pages/homepage/Homepage';
 import Layout from './components/layout/Layout';
-import ShopPage from './pages/shoppage/ShopPage';
+import ShopPageList from './pages/shoppage/ShopPageList';
 import { AuthProvider } from './components/authProvider/AuthProvider';
 import AccountPage from './pages/accountpage/AccountPage';
+import ShopPageProduct from './pages/shoppage/ShopPageProduct';
 
 const App: React.FC = () => {
   return (
@@ -13,8 +14,10 @@ const App: React.FC = () => {
         <Routes>
           <Route path="/" element={<Layout />} >
             <Route index element={<HomePage />} />
-            <Route path="shop" element={<ShopPage />} />
+            <Route path="shop/:searchTerm/list" element={<ShopPageList />} />
+            <Route path="shop/:itemNumber/product" element={<ShopPageProduct />} />
             <Route path="account" element={<AccountPage />} />
+            <Route path="*" element={<div>404 Not Found</div>} />
           </Route>
         </Routes>
       </BrowserRouter>

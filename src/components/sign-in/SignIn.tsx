@@ -52,7 +52,7 @@ const SignIn: React.FC<SignInTypes> = ({setShowDropDown}) => {
                 <div>
                     <p>You have Successfully Signed In</p>
                     <div className="container center add-margin">
-                        <button onClick={()=>setShowModal(false)}>Close</button>
+                        <button className='button' onClick={()=>setShowModal(false)}>Close</button>
                     </div>
                 </div>
             </Modal>}

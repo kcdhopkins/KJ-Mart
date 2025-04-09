@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const { createUserAccount, getUserByEmail, getUserBy_Id } = require('../../database/mongo-db/accounts/accounts')
-const { encryptPassword, sanitizeUsername, verifyPassword, authUserToken }= require('../../functions/helperFunctions.js')
+const { createUserAccount, getUserByEmail, getUserBy_Id, editAccountInfo } = require('../../database/mongo-db/accounts/accounts')
+const { encryptPassword, sanitizeInput, verifyPassword, authUserToken, formatPhoneNumber }= require('../../functions/helperFunctions.js')
 const jwt = require('jsonwebtoken')
 const {signJWTWebToken} = require('../../functions/helperFunctions.js')
 const {logoutUser} = require('../../database/mongo-db/accounts/accounts.js')
@@ -49,8 +49,8 @@ router.post('/sign-in', async (req, res) => {
 router.post('/create-account', async(req, res) => {
     const {firstName, lastName, email, password } = req.body
     const encryptedPassword = await encryptPassword(password)
-    const sanitizedFirstName = sanitizeUsername(firstName.trim())
-    const sanitizedLastName = sanitizeUsername(lastName.trim())
+    const sanitizedFirstName = sanitizeInput(firstName.trim())
+    const sanitizedLastName = sanitizeInput(lastName.trim())
     const emailFormat = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const isEmailValid = emailFormat.test(email)
 
@@ -105,11 +105,19 @@ router.get('/logout', authUserToken, async (req, res)=>{
     res.send(JSON.stringify({status: 200, loggedIn: false, token:"", message: 'Logout Success'}))        
 })
 
-router.get('/edit-account', authUserToken, async (req, res)=>{
-    console.log(req.body)
-    const user = await getUserByEmail(req.user.email)
-    delete user.password
-    res.send(JSON.stringify({status: 200, loggedIn: true, user:user, token: req.token, message: 'Login Success'}))        
+router.post('/edit-account', authUserToken, async (req, res)=>{
+    const {city, state, zip, phone, street } = req.body
+    const sanitizedStreet = sanitizeInput(street.trim())
+    const sanitizedCity = sanitizeInput(city.trim())
+    const sanitizedState = sanitizeInput(state.trim())
+    const sanitizedZip = sanitizeInput(zip.trim())
+    const sanitizedPhone = sanitizeInput(phone.trim())
+    
+    const formattedPhone = formatPhoneNumber(sanitizedPhone)
+
+    const result = await editAccountInfo(sanitizedStreet, sanitizedCity, sanitizedState, sanitizedZip, formattedPhone, req.user.email)
+
+    res.send(JSON.stringify(result))        
 })
 
 module.exports = router

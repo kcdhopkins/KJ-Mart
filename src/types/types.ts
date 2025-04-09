@@ -5,6 +5,11 @@ export type User = {
     lastName: string
     email: string
     _id: string
+    phone: string
+    street: string
+    city: string
+    state: string
+    zip: string
 }
 export type UserInfo = {
     user: User
@@ -13,7 +18,7 @@ export type UserInfo = {
 }
 
 export type AuthProviderProps = {
-    children: ReactNode; 
+    children: ReactNode;
 }
 
 export type AuthAction =

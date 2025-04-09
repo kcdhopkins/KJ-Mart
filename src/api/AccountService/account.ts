@@ -19,6 +19,7 @@ export const callSignIn = async ({email, password} : callSignInTypes) => {
             headers: {
               'Content-Type': 'application/json',
             },
+            credentials: 'include',
             body: JSON.stringify({email, password})
           })
         return response.json()
@@ -34,6 +35,7 @@ export const callCreateAccount = async ({firstName, lastName, email, password}:c
             headers: {
                 'Content-Type': 'application/json',
             },
+            credentials: 'include',
             body: JSON.stringify({
                 firstName,
                 lastName,
@@ -79,9 +81,73 @@ export const callLogoutUser = async ()=>{
         })
 
         const result = await response.json()
-        console.log(result)
         return result
     } catch(err){
         throw new Error('Error calling logout')
     }
 }
+
+export const editAccountInfo = async (phone : string, city: string, state: string, zip:string, street:string) => {
+    try{
+        const response = await fetch(`${baseUrl}/api/account/edit-account`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('token')}`,
+            },
+            credentials: 'include',
+            body: JSON.stringify({
+                phone,
+                city,
+                state,
+                zip,
+                street
+            })
+        })
+    
+        return response.json()
+    } catch (err){
+        throw new Error('editAccountInfo has thrown an error')
+    }
+}
+
+export const getSearchInventory = async (searchTerm:string) => {
+    try{
+        const response = await fetch(`${baseUrl}/api/inventory/search`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            credentials: 'include',
+            body: JSON.stringify({
+                searchTerm
+            })
+        })
+    
+        return response.json()
+    } catch (err){
+        throw new Error('getSearchInventory has thrown an error')
+    }
+}
+
+// export const searchItem = async (searchTerm:string) => {
+//     try{
+//         const response = await fetch(`${baseUrl}/api/shop/create-account`, {
+//             method: 'POST',
+//             headers: {
+//                 'Content-Type': 'application/json',
+//             },
+//             body: JSON.stringify({
+//                 firstName,
+//                 lastName,
+//                 email,
+//                 password
+//             })
+//         })
+    
+//         return response.json()
+//     } catch (err){
+//         throw new Error('callCreateAccount has thrown an error')
+//     }
+// }
+
