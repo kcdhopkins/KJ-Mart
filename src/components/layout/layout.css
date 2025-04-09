@@ -10,7 +10,9 @@ body,
   margin: 0;
   min-width: 449px; /* Move min-width here */
 }
-
+.f-container{
+    display: flex;
+}
 
 .flex-container{
     display: flex;
@@ -22,7 +24,7 @@ body,
     display: flex;
 }
 
-button{
+.button{
     padding: 15px;
     margin: 5px;
     background-color: #64a1f4;
@@ -31,7 +33,7 @@ button{
     color: white;
 }
 
-button:active{
+.button:active{
     padding: 15px;
     margin: 5px;
     background-color: #64a1f4;
@@ -41,7 +43,7 @@ button:active{
     transform: scale(0.9);
 }
 
-button:hover{
+.button:hover{
     padding: 15px;
     margin: 5px;
     background-color: #4a91f2;
@@ -133,6 +135,10 @@ hr{
 .bg-white{
     background-color: white;
 }
+
+ul {
+    list-style-type: none; /* Removes bullets */
+  }
 
 @media (max-width: 600px){
     .layout{

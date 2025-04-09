@@ -19,11 +19,11 @@ const ContactInfo: React.FC = () => {
                         <li className="list-acct"><b>First Name: </b> {state.user.firstName}</li>
                         <li className="list-acct"><b>Last Name </b> {state.user.lastName}</li>
                         <li className="list-acct"><b>Email: </b> {state.user.email}</li>
-                        <li className="list-acct"><b>Phone: </b> (123) 123 1234</li>
+                        <li className="list-acct"><b>Phone: </b> {state.user.phone}</li>
                         <li className="list-acct"><b>Address</b> </li>
                         <hr />
-                        <li className="list-acct"><b>Street: </b>123 ABC Lane</li>
-                        <li className="list-acct"><b>City, State, Zip: </b> Hazlehurst MS, 39083</li>
+                        <li className="list-acct"><b>Street: </b>{state.user?.street}</li>
+                        <li className="list-acct"><b>City, State, Zip: </b> {`${state.user.city} ${state.user.state}, ${state.user.zip} `}</li>
                     </ul>
                 </div>
                 <div className="h-100">

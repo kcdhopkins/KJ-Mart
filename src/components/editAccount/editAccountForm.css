@@ -2,3 +2,15 @@
     display: grid;
     grid-template-columns: 1fr 3fr;
 }
+
+.input-acct{
+    width: 95%;
+}
+
+.margin{
+    margin: 5px;
+}
+
+.padding{
+    padding: 5px;
+}

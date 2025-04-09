@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { callCreateAccount } from "../../api/AccountService/account";
 import { useAuth } from "../authProvider/authContext";
+import { isValidEmail } from "../../helpers/helpers";
 
 type CreateAccountFormTypes = {
     setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -25,8 +26,7 @@ const CreateAccountForm: React.FC<CreateAccountFormTypes> = ({ setShowModal, set
     const handleSubmit = async () => {
         let canSubmit = true
         if (email) {
-            const emailFormat = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            const isValid = emailFormat.test(email)
+            const isValid = isValidEmail(email)
             if (!isValid) {
                 setInvalidFormat(!isValid)
                 canSubmit = false

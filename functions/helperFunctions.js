@@ -5,12 +5,12 @@ const sanitizeHtml = require('sanitize-html')
 const jwt = require('jsonwebtoken');
 const { isTokenInvalidated } = require('../database/mongo-db/accounts/accounts');
 
-const encryptPassword = async (password)=>{
+const encryptPassword = async (password) => {
     const salt = randomBytes(16).toString('hex');
     const hash = await pbkdf2Async(password, salt, 100000, 64, 'sha512');
     const saltedHash = `${salt}:${hash.toString('hex')}`
     const canVerify = await verifyPassword(password, saltedHash)
-    if(canVerify){
+    if (canVerify) {
         return saltedHash
     }
     return `there was a problem with your password`;
@@ -22,15 +22,15 @@ const verifyPassword = async (password, storedHash) => {
     return hash.toString('hex') === originalHash;
 }
 
-const sanitizeUsername = (username)=>{
-    const sanitizedusername = sanitizeHtml(username, {
+const sanitizeInput = (input) => {
+    const sanitizedinput = sanitizeHtml(input, {
         allowedTags: [],
         allowedAttributes: {},
     }).trim();
-    return sanitizedusername
+    return sanitizedinput
 }
 
-const authUserToken = (req, res, next)=>{
+const authUserToken = (req, res, next) => {
     const token = req.cookies.token || req.headers?.authorization.split(" ")[1];
 
     if (!token) {
@@ -41,10 +41,10 @@ const authUserToken = (req, res, next)=>{
         if (err) {
             return res.status(202).json({ message: 'Invalid token' });
         }
-        
+
         const isTokenInvalid = await isTokenInvalidated(decoded.user._id, token)
-       
-        if(isTokenInvalid){
+
+        if (isTokenInvalid) {
             res.clearCookie("token")
             return res.status(202).json({ message: 'Invalid token' });
         }
@@ -55,7 +55,7 @@ const authUserToken = (req, res, next)=>{
     });
 }
 
-const signJWTWebToken = (user)=>{
+const signJWTWebToken = (user) => {
     const token = jwt.sign(
         { user: user },
         process.env.JWT_SECRET,
@@ -64,10 +64,29 @@ const signJWTWebToken = (user)=>{
     return token
 }
 
+const isEmailValid = (email) => {
+    const emailFormat = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailFormat.test(email)
+}
+
+
+const formatPhoneNumber = (phoneNumberString) => {
+    const cleaned = ('' + phoneNumberString).replace(/\D/g, '');
+    const match = cleaned.match(/^(\d{3})(\d{3})(\d{4})$/);
+    
+    if (match) {
+        return `(${match[1]}) ${match[2]}-${match[3]}`;
+    }
+    return null;
+};
+
+
 module.exports = {
-    sanitizeUsername,
+    sanitizeInput,
     encryptPassword,
     verifyPassword,
     authUserToken,
-    signJWTWebToken
+    signJWTWebToken,
+    isEmailValid,
+    formatPhoneNumber
 }

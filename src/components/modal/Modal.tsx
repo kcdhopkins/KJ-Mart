@@ -34,8 +34,8 @@ const Modal: React.FC<ModalTypes> = ({ setShowModal, title, children, hideButton
                     {!hideButtons && <div className="move-to-bottom">
                         <hr />
                         <div className="card-footer">
-                            <button onClick={()=>dispatchSubmitEvent()}>Submit</button>
-                            <button onClick={() => onCancel()}>Cancel</button>
+                            <button className='button' onClick={()=>dispatchSubmitEvent()}>Submit</button>
+                            <button className='button' onClick={() => onCancel()}>Cancel</button>
                         </div>
                     </div>}
                 </div>

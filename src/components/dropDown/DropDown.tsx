@@ -32,7 +32,7 @@ const DropDown: React.FC<DropDownTypes> = ({setShowDropDown}) => {
                 <li className="container center column li-style">
                     <hr />
                     <div className='container center'>
-                        <button onClick={()=>setShowDropDown(false)}>Close</button>
+                        <button className='button' onClick={()=>setShowDropDown(false)}>Close</button>
                     </div>
                 </li>
             </ul>

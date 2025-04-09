@@ -15,6 +15,11 @@ const authReducer = (state: UserInfo, action: AuthAction): UserInfo => {
           lastName: "",
           email: "",
           _id: "",
+          phone: "",
+          street: "",
+          city: "",
+          state: "",
+          zip: "",
         },
         token: "",
         loggedIn: false

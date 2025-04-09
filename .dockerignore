@@ -1,0 +1,4 @@
+# filepath: c:\Users\kcdho\Documents\projects2025\.dockerignore
+node_modules
+npm-debug.log
+.env

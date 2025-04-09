@@ -45,7 +45,7 @@ const logoutUser = async (id, token) => {
             { $push: { tokens: token } }
         )
 
-        if(response.modifiedCount === 0){
+        if (response.modifiedCount === 0) {
             const invalidTokenObject = {
                 userId: id,
                 tokens: [token]
@@ -61,12 +61,12 @@ const logoutUser = async (id, token) => {
     }
 }
 
-const isTokenInvalidated = async (id, token)=>{
+const isTokenInvalidated = async (id, token) => {
     try {
         const db = await connectToDatabase()
         const invalidTokensCollection = db.collection('invalidTokens')
-        const invalidatedToken = await invalidTokensCollection.findOne({ userId: id, tokens: {$in: [token]} })
-        if(invalidatedToken){
+        const invalidatedToken = await invalidTokensCollection.findOne({ userId: id, tokens: { $in: [token] } })
+        if (invalidatedToken) {
             return true
         }
         return false
@@ -75,10 +75,45 @@ const isTokenInvalidated = async (id, token)=>{
     }
 }
 
+const editAccountInfo = async (street, city, state, zip, phone, email) => {
+    const db = await connectToDatabase()
+    const usersCollection = db.collection('users')
+    try {
+        const filter = { email: email }; 
+        if(street){
+            const update = { $set: { street } }; 
+            await usersCollection.updateOne(filter, update);
+        }
+        if(city){
+            const update = { $set: { city } }; 
+            await usersCollection.updateOne(filter, update);
+        }
+        if(state){
+            const update = { $set: { state } }; 
+            await usersCollection.updateOne(filter, update);
+        }
+        if(zip){
+            const update = { $set: { zip } }; 
+            await usersCollection.updateOne(filter, update);
+        }
+        if(phone){
+            const update = { $set: { phone } }; 
+            await usersCollection.updateOne(filter, update);
+        }
+        return { status: 200, message: 'User Updated' }
+    } catch (error) {
+        console.error('Error updating document:', error);
+    } finally {
+        await db.client.close();
+    }
+}
+
+
 module.exports = {
     createUserAccount,
     getUserByEmail,
     getUserBy_Id,
     logoutUser,
-    isTokenInvalidated
+    isTokenInvalidated,
+    editAccountInfo
 }
